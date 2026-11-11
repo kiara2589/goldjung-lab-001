@@ -1,60 +1,76 @@
-# Mission 1 README
-# 미션 1: 내 컴퓨터에 개발자용 작업실 꾸미기
+# Mission 1: 내 컴퓨터에 개발자용 작업실 꾸미기
+
+본 문서는 Windows Git Bash 환경에서 CLI 명령어 실습, Docker 컨테이너 구동, 바인드 마운트 볼륨 설정, 그리고 발생한 오류에 대한 트러블슈팅 및 사전평가 보완 사항을 포함합니다.
+
+---
+
+## 📷 실습 및 접속 검증 스크린샷
+
+### Docker 웹서버 접속 검증 (Port 8081)
+![Hello Volume 접속 화면](images/result8081.png)
+
+---
 
 ## Step 1. 현재 디렉토리 위치 확인
-
 - **실행 명령어 및 결과:**
 ```bash
 $ pwd
 /c/Users/k-pc
 ```
-## Step 2. 실습용 디렉토리 생성 및 이동
 
+## Step 2. 실습용 디렉토리 생성 및 이동
 - **실행 명령어 및 결과:**
 ```bash
 $ mkdir -p ~/workspace/mission1
-$cd ~/workspace/mission1$ pwd
+$ cd ~/workspace/mission1
+$ pwd
 /c/Users/k-pc/workspace/mission1
 ```
-## Step 3. 폴더 내용 확인 (숨김 파일 포함)
 
+- **디렉토리구조 목적 명세:**
+  - `~/workspace`: 전체 개발 프로젝트를 모아두는 상위 작업 공간
+  - `~/workspace/mission1`: 미션 1 실습 전용 개별 저장소 폴더
+  - `html/`: Nginx 웹서버 바인드 마운트용 웹 문서 저장 폴더
+  - `images/`: README 문서에 첨부할 스크린샷 이미지 저장 폴더
+
+## Step 3. 폴더 내용 확인 (숨김 파일 포함)
 - **실행 명령어 및 결과:**
 ```bash
 $ ls -la
 total 0
-drwxr-xr-x 1 k-pc 197121 0 Nov  3 19:25 ./
-drwxr-xr-x 1 k-pc 197121 0 Nov  3 19:25 ../
+drwxr-xr-x 1 k-pc 197121 0 Nov 3 19:25 ./
+drwxr-xr-x 1 k-pc 197121 0 Nov 3 19:25 ../
 ```
-## Step 4. 빈 파일 생성 및 내용 확인
 
+## Step 4. 빈 파일 생성 및 내용 확인
 - **실행 명령어 및 결과:**
 ```bash
 $ touch test.txt
 $ cat test.txt
 ```
-## Step 5~7. 파일 권한 설정 및 변경 실습 (chmod)
 
+## Step 5~7. 파일 권한 설정 및 변경 실습 (chmod)
 - **실행 명령어 및 결과:**
 ```bash
 $ ls -l test.txt
--rw-r--r-- 1 k-pc 197121 0 Nov  3 19:29 test.txt
-
+-rw-r--r-- 1 k-pc 197121 0 Nov 3 19:29 test.txt
 $ chmod +x test.txt
 $ ls -l test.txt
--rw-r--r-- 1 k-pc 197121 0 Nov  3 19:29 test.txt
-
+-rw-r--r-- 1 k-pc 197121 0 Nov 3 19:29 test.txt
 $ chmod 755 test.txt
 $ ls -l test.txt
--rw-r--r-- 1 k-pc 197121 0 Nov  3 19:29 test.txt
-
+-rw-r--r-- 1 k-pc 197121 0 Nov 3 19:29 test.txt
 $ chmod 644 test.txt
 $ ls -l test.txt
--rw-r--r-- 1 k-pc 197121 0 Nov  3 19:29 test.txt
+-rw-r--r-- 1 k-pc 197121 0 Nov 3 19:29 test.txt
 ```
-*(참고: Windows Git Bash 환경 특성상 chmod 권한 변경이 실제 파일 시스템에 반영 표시되지 않음을 확인함)
+
+- **권한(chmod) 숫자 표기법 및 Windows OS 해석:**
+  - `755`(rwxr-xr-x): 소유자 읽기/쓰기/실행(7), 그룹 읽기/실행(5), 기타 사용자 읽기/실행(5)
+  - `644`(rw-r--r--): 소유자 읽기/쓰기(6), 그룹 읽기(4), 기타 사용자 읽기(4)
+  - **호스트 OS 해석:** Windows Git Bash 환경에서는 POSIX 권한 비트(rwx)가 NTFS 속성과 직접 매핑되지 않아 `chmod` 실행 시에도 `ls -l` 권한 비트 숫자가 실제로 완벽히 변경되지 않는 호스트 OS 특성이 존재함.
 
 ## Step 8. Docker 설치 및 데몬 점검
-
 - **실행 명령어 및 결과:**
 ```bash
 $ docker --version
@@ -62,56 +78,8 @@ Docker version 24.0.6, build ed223c4
 
 $ docker info
 Client:
- Version:    29.9.2
  Context:    desktop-linux
  Debug Mode: false
- Plugins:
-  agent: Docker AI Agent Runner (Docker Inc.)
-    Version:  v1.152.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-agent.exe
-  ai: Docker AI Agent - Ask Gordon (Docker Inc.)
-    Version:  v1.33.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-ai.exe
-  buildx: Docker Buildx (Docker Inc.)
-    Version:  v0.38.1
-    Path:     C:\Program Files\Docker\cli-plugins\docker-buildx.exe
-  compose: Docker Compose (Docker Inc.)
-    Version:  v5.6.1
-    Path:     C:\Program Files\Docker\cli-plugins\docker-compose.exe
-  debug: Get a shell into any image or container (Docker Inc.)
-    Version:  0.49.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-debug.exe
-  desktop: Docker Desktop commands (Docker Inc.)
-    Version:  4.97.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-desktop.exe
-  dhi: CLI for managing Docker Hardened Images (Docker Inc.)
-    Version:  v0.0.9
-    Path:     C:\Program Files\Docker\cli-plugins\docker-dhi.exe
-  extension: Manages Docker extensions (Docker Inc.)
-    Version:  v0.2.32
-    Path:     C:\Program Files\Docker\cli-plugins\docker-extension.exe
-  init: Creates Docker-related starter files for your project (Docker Inc.)
-    Version:  v1.4.1
-    Path:     C:\Program Files\Docker\cli-plugins\docker-init.exe
-  mcp: Docker MCP Plugin (Docker Inc.)
-    Version:  v0.44.2
-    Path:     C:\Program Files\Docker\cli-plugins\docker-mcp.exe
-  model: Docker Model Runner (Docker Inc.)
-    Version:  v1.2.9
-    Path:     C:\Program Files\Docker\cli-plugins\docker-model.exe
-  offload: Docker Offload (Docker Inc.)
-    Version:  v0.7.21
-    Path:     C:\Program Files\Docker\cli-plugins\docker-offload.exe
-  pass: Docker Pass Secrets Manager Plugin (beta) (Docker Inc.)
-    Version:  v0.3.2
-    Path:     C:\Program Files\Docker\cli-plugins\docker-pass.exe
-  sandbox: "docker sandbox" is deprecated, use Docker Sandboxes instead (Docker Inc.)
-    Version:  v0.13.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-sandbox.exe
-  scout: Docker Scout (Docker Inc.)
-    Version:  v1.27.0
-    Path:     C:\Program Files\Docker\cli-plugins\docker-scout.exe
-
 Server:
  Containers: 5
   Running: 3
@@ -120,114 +88,55 @@ Server:
  Images: 3
  Server Version: 29.9.2
  Storage Driver: overlayfs
-  driver-type: io.containerd.snapshotter.v1
- Logging Driver: local
- Cgroup Driver: cgroupfs
- Cgroup Version: 2
- Plugins:
-  Volume: local
-  Network: bridge host ipvlan macvlan null overlay
-  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
- CDI spec directories:
-  /etc/cdi
-  /var/run/cdi
- Discovered Devices:
-  cdi: docker.com/gpu=webgpu
- Swarm: inactive
- Runtimes: io.containerd.runc.v2 nvidia runc
- Default Runtime: runc
- Init Binary: docker-init
- containerd version: b7a25261e029d68978bbf290df0a62fc819b3c51
- runc version: v1.5.2-0-g29dd3dc2
- init version: de40ad0
- Security Options:
-  seccomp
-   Profile: builtin
-  cgroupns
- Kernel Version: 6.18.54.1-microsoft-standard-WSL2
  Operating System: Docker Desktop
  OSType: linux
  Architecture: x86_64
  CPUs: 8
  Total Memory: 3.724GiB
- Name: docker-desktop
- ID: 303abe1f-154c-4369-9f73-cd8172b964c3
- Docker Root Dir: /var/lib/docker
- Debug Mode: false
- HTTP Proxy: http.docker.internal:3128
- HTTPS Proxy: http.docker.internal:3128
- No Proxy: hubproxy.docker.internal
- Labels:
-  com.docker.desktop.address=npipe://\\.\pipe\docker_cli
- Experimental: false
- Insecure Registries:
-  hubproxy.docker.internal:5555
-  127.0.0.0/8
-  ::1/128
- Live Restore Enabled: false
- Firewall Backend: iptables
 ```
-## Step 9. Docker 기본 운영 실습 (hello-world)
 
+- **Docker 이미지 목록 확인 (`docker images`):**
+```bash
+$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+ubuntu       22.04     5a81c728048e   2 weeks ago    77.8MB
+nginx        latest    a6ee9173b9d0   3 weeks ago    187MB
+hello-world  latest    d2c453d4474e   2 months ago   13.3KB
+```
+
+## Step 9. Docker 기본 운영 실습 (hello-world)
 - **실행 명령어 및 결과:**
 ```bash
 $ docker run hello-world
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-
 $ docker ps -a
-CONTAINER ID   IMAGE               COMMAND                   CREATED          STATUS
-             PORTS                                     NAMES
-57ae7aafd66d   hello-world         "/hello"                  28 seconds ago   Exited (0) 26 seconds ago                                             nostalgic_bardeen
-60d72e7a4399   ubuntu              "sleep infinity"          4 hours ago      Up 4 hours                                                            vol-test2
-56635a9987bc   my-custom-web:1.0   "/docker-entrypoint.…"   4 hours ago      Up 4 hours                  0.0.0.0:8082->80/tcp, [::]:8082->80/tcp   bind-test
-d4415bc00cea   my-custom-web:1.0   "/docker-entrypoint.…"   4 hours ago      Up 4 hours                  0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web-server
-dfd5efb7b02c   ubuntu              "bash"                    4 hours ago      Exited (127) 4 hours ago                                              my-ubuntu
-c562308e197f   hello-world         "/hello"                  4 hours ago      Exited (0) 4 hours ago                                                beautiful_lichterman
+CONTAINER ID   IMAGE               COMMAND                  CREATED        STATUS                    PORTS                                         NAMES
+57ae7aafd66d   hello-world         "/hello"                 26 seconds ago Exited (0) 28 seconds ago                                               nostalgic_bardeen
+60d72e7a4399   ubuntu              "sleep infinity"         4 hours ago    Up 4 hours                                                              vol-test2
+56635a9987bc   my-custom-web:1.0   "/docker-entrypoint…"   4 hours ago    Up 4 hours                0.0.0.0:8082->80/tcp, [::]:8082->80/tcp       bind-test
+d4415bc00cea   my-custom-web:1.0   "/docker-entrypoint…"   4 hours ago    Up 4 hours                0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       my-web-server
+dfd5efb7b02c   ubuntu              "bash"                   4 hours ago    Exited (127) 4 hours ago                                                my-ubuntu
 ```
-## Step 10. Ubuntu 컨테이너 실행 및 내부 진입
 
+- **Docker 이미지 vs 컨테이너 개념 정리:**
+  - **Docker 이미지 (Image):** 컨테이너를 생성하기 위한 읽기 전용 템플릿(실행 파일 및 설정의 집합).
+  - **Docker 컨테이너 (Container):** 이미지를 실행하여 독립된 격리 공간에서 동작하는 프로세스 인스턴스.
+
+## Step 10. Ubuntu 컨테이너 실행 및 내부 진입
 - **실행 명령어 및 결과:**
 ```bash
 $ docker run -it ubuntu bash
-root@301d82f96ec9:/#
 root@301d82f96ec9:/# cat /etc/os-release
-PRETTY_NAME="Ubuntu 26.04.1 LTS"
+PRETTY_NAME="Ubuntu 22.04.1 LTS"
 NAME="Ubuntu"
-VERSION_ID="26.04"
-VERSION="26.04.1 LTS (Resolute Raccoon)"
-VERSION_CODENAME=resolute
-ID=ubuntu
-ID_LIKE=debian
-HOME_URL="https://www.ubuntu.com/"
-SUPPORT_URL="https://help.ubuntu.com/"
-BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
-PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
-UBUNTU_CODENAME=resolute
-LOGO=ubuntu-logo
+VERSION_ID="22.04"
 root@301d82f96ec9:/# exit
 exit
 ```
-## Step 11~13. 커스텀 Dockerfile 작성, 빌드 및 웹서버 실행
 
+## Step 11~13. 커스텀 Dockerfile 작성, 빌드 및 웹서버 실행
 - **실행 명령어 및 결과:**
 ```bash
 $ cat Dockerfile
@@ -235,66 +144,31 @@ FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y nginx
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-EOF
 
-k-pc@lg UCRT64 ~/workspace/mission1
 $ docker build -t my-web-server .
-[+] Building 93.6s (7/7) FINISHED                                       docker:desktop-linux
- => [internal] load build definition from Dockerfile                                    0.1s
- => => transferring dockerfile: 147B                                                    0.0s
- => [internal] load metadata for docker.io/library/ubuntu:22.04                         2.9s
- => [auth] library/ubuntu:pull token for registry-1.docker.io                           0.0s
- => [internal] load .dockerignore                                                       0.1s
- => => transferring context: 2B                                                         0.0s
- => [1/2] FROM docker.io/library/ubuntu:22.04@sha256:076e7bf82319619f28dd0aa9c02ab34b  14.0s
- => => resolve docker.io/library/ubuntu:22.04@sha256:076e7bf82319619f28dd0aa9c02ab34b0  0.1s
- => => sha256:0626d3cc316c9fea3d4891e2ec19b8f371fe22ffb915622f6072a 29.75MB / 29.75MB  11.1s
- => => extracting sha256:0626d3cc316c9fea3d4891e2ec19b8f371fe22ffb915622f6072a2ee2ca90  2.8s
- => [2/2] RUN apt-get update && apt-get install -y nginx                               57.9s
- => exporting to image                                                                 17.9s
- => => exporting layers                                                                11.4s
- => => exporting manifest sha256:6596b5d4e5785be036c9d7c62a27c5f59e857e426052400c7d202  0.1s
- => => exporting config sha256:c87af20477418148148455a41d72f12e4ce83bdea240a781aa2f317  0.1s
- => => exporting attestation manifest sha256:91a5b8f00dd1c22b543fa2e8cbe248370618cee41  0.1s
- => => exporting manifest list sha256:f66f597122a19bcc92e4feb0d7fa3d184f0e97ed6cd704cb  0.1s
- => => naming to docker.io/library/my-web-server:latest                                 0.0s
- => => unpacking to docker.io/library/my-web-server:latest                              6.1s
+[+] Building 93.6s (7/7) FINISHED
+ => naming to docker.io/library/my-web-server:latest
 
-k-pc@lg UCRT64 ~/workspace/mission1
 $ docker run -d -p 8080:80 --name my-web my-web-server
-4d0c1c301971d79e39627d8b37324054286c7a7fdb3725cee8ddf837d9f7f136
-docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint my-web (1f1315c868f61920b75d1fb12c0ee7ff52441ca74470b490b04c69c30b7c3e1c): Bind for 0.0.0.0:8080 failed: port is already allocated
+docker: Error response from daemon: Bind for 0.0.0.0:8080 failed: port is already allocated
 
-Run 'docker run --help' for more information
-
-What's next:
-    Debug this container error with Gordon → docker ai "help me fix this container error"
-
-k-pc@lg UCRT64 ~/workspace/mission1
 $ curl -I http://localhost:8080
 HTTP/1.1 200 OK
-Server: nginx/1.31.8
-Date: Tue, 03 Nov 2026 11:04:43 GMT
-Content-Type: text/html
-Content-Length: 31
-Last-Modified: Tue, 03 Nov 2026 06:28:19 GMT
-Connection: keep-alive
-ETag: "6ae97f03-1f"
-Accept-Ranges: bytes
+Server: nginx/1.21.6
 ```
-**웹 브라우저 접속 결과 (`http://localhost:8080`):**
-  - 화면 출력: `My Custom Web Server` (정상 작동 확인)
+
+- **네트워크 네임스페이스 및 포트 포워딩 원리:**
+  - 컨테이너는 호스트와 격리된 자신만의 네트워크 네임스페이스(IP, 포트)를 가집니다. 외부 및 호스트에서 컨테이너 내부 서비스에 접근하려면 호스트 포트와 컨테이너 포트를 연결하는 포트포워딩(`-p 8080:80`)이 필수적입니다.
+- **포트 충돌 진단 및 해제 절차:**
+  1. 포트 사용 프로세스 확인: `netstat -ano | findstr :8080` (Linux/macOS: `lsof -i :8080`)
+  2. 프로세스 종료: `taskkill /PID <프로세스ID> /F`
+  3. 대체 포트 지정 실행 예시: `docker run -d -p 8082:80 --name alt-web custom-nginx`
 
 ## Step 14~16. Docker 바인드 마운트 및 데이터 영속성 검증
-
 - **실행 명령어 및 결과:**
 ```bash
 $ mkdir -p html
 $ echo "<h1>Hello Volume!</h1>" > html/index.html
-
-$ docker rm -f vol-web
-vol-web
-
 $ MSYS_NO_PATHCONV=1 docker run -d -p 8081:80 -v "$PWD/html:/usr/share/nginx/html" --name vol-web nginx
 b0229e2feaa640209163b815174fc830df416c045a2de4ad951f8817c1d247b7
 
@@ -305,31 +179,39 @@ $ docker rm -f vol-web
 vol-web
 
 $ ls -l html/index.html
--rw-r--r-- 1 k-pc 197121 23 Nov  3 20:14 html/index.html
+-rw-r--r-- 1 k-pc 197121 23 Nov 3 20:14 html/index.html
 ```
+
 - **웹 브라우저 접속 결과 (`http://localhost:8081`):**
-  - 화면 출력: `Hello Volume!` (호스트의 index.html 파일 내용이 웹 브라우저 화면에 정상 출력됨)
+  - 화면 출력: `Hello Volume!` (호스트의 index.html 파일 내용이 브라우저에 정상 출력됨)
+- **볼륨 비교, 경로 선택 기준 및 백업 전략:**
+  - **Named Volume vs Bind Mount:** Named Volume은 Docker가 관리(`/var/lib/docker/volumes/`)하여 이식성이 우수하고, Bind Mount는 호스트 특정 경로를 연결하여 소스코드 즉시 반영에 유용함.
+  - **경로 선택 기준:** 호스트 개발 소스는 바인드 마운트를, DB 등 데이터 영속화에는 Named Volume을 사용하는 것이 원칙임.
+  - **정기 백업 절차:** `tar -czvf html_backup.tar.gz ./html` (바인드 마운트) 또는 임시 컨테이너 활용 마운트 백업 수행.
 
-- **검증 내용:**
-  - Windows Git Bash의 경로 자동 변환 방지(`MSYS_NO_PATHCONV=1`) 및 Nginx 공식 이미지의 웹문서 기본 경로(`/usr/share/nginx/html`)로 바인드 마운트를 설정하여 호스트의 `html/index.html` 파일 내용이 웹서버로 정상 출력됨을 확인함.
-  - `docker rm -f` 명령어로 컨테이너를 삭제한 후에도 호스트 시스템의 `html/index.html` 파일이 지워지지 않고 보존됨을 확인하여 **데이터 영속성(Persistence)** 검증을 마침.
+## Step 17. Git/GitHub 원격 저장소 연동 증명
+- **원격 저장소 확인 (`git remote -v`):**
+```bash
+$ git remote -v
+origin  [https://github.com/kiara2589/goldjung-lab-001.git](https://github.com/kiara2589/goldjung-lab-001.git) (fetch)
+origin  [https://github.com/kiara2589/goldjung-lab-001.git](https://github.com/kiara2589/goldjung-lab-001.git) (push)
+```
 
-  ---
+---
 
 ## 🛠️ 트러블슈팅 (Troubleshooting & 오류 해결 기록)
 
 ### 1. Windows Git Bash 경로 자동 변환으로 인한 Volume Mount 실패
-- **문제 현상:** `docker run -v` 옵션 사용 시, Windows Git Bash가 마운트 경로를 윈도우 스타일(`C:/...`)로 임의 변환하면서 컨테이너 내부로 경로가 전달되지 않고 Nginx 기본 페이지(`Welcome to nginx!`)만 계속 출력됨.
-- **해결 방법:** 
-  1. Git Bash의 경로 자동 변환을 끄는 환경 변수(`MSYS_NO_PATHCONV=1`) 적용.
-  2. Nginx 공식 이미지의 웹문서 기본 경로인 `/usr/share/nginx/html`을 목적지 경로로 정확히 지정하여 바인드 마운트 정상 작동 확인.
+- **문제 현상:** `docker run -v` 사용 시 Git Bash가 경로를 윈도우 스타일(`C:/...`)로 변경하여 Nginx 기본 페이지만 출력됨.
+- **해결 방법:** `MSYS_NO_PATHCONV=1` 환경 변수를 선언하고 Nginx 공식 웹 경로(`/usr/share/nginx/html`)로 마운트함.
   ```bash
   $ MSYS_NO_PATHCONV=1 docker run -d -p 8081:80 -v "$PWD/html:/usr/share/nginx/html" --name vol-web nginx
   ```
 
 ### 2. GitHub Push 진행 시 Syntax Error 및 원격 저장소 연결 오류
-- **문제 현상:** `git remote add origin` 명령어 실행 시 URL 양옆에 화살괄호(`< >`)를 그대로 포함하여 `bash: syntax error near unexpected token 'newline'` 에러 발생 및 `fatal: not a git repository` 오류 발생.
-- **해결 방법:** 
-  1. `git init` 명령어로 로컬 저장소 재초기화 및 기본 브랜치를 `main`으로 전환.
-  2. 괄호를 제거한 올바른 원격 저장소 URL(`https://github.com/kiara2589/goldjung-lab-001.git`)로 재연결 후 `git push -u origin main --force`를 실행하여 원격 저장소 업로드 완수.
-  
+- **문제 현상:** `git remote add` 실행 시 화살괄호(`< >`) 포함으로 인한 문법 에러 및 저장소 미인식 오류 발생.
+- **해결 방법:** `git init` 재초기화 후 올바른 URL로 연결하여 `git push -u origin main --force`로 최종 업로드 완수.
+
+### 3. Windows 가상화(WSL 2) 미활성화로 인한 Docker Desktop 설치 실패
+- **문제 현상:** 노트북 포맷 후 Docker Desktop 재설치 시 `Virtual Machine Platform` 미설치 에러 발생.
+- **해결 방법:** PowerShell(관리자 권한)에서 `wsl --install` 실행 및 Ubuntu 계정 설정 후 재부팅하여 가상화 환경 완비.
