@@ -189,7 +189,8 @@ $ ls -l html/index.html
   - **경로 선택 기준:** 호스트 개발 소스는 바인드 마운트를, DB 등 데이터 영속화에는 Named Volume을 사용하는 것이 원칙임.
   - **정기 백업 절차:** `tar -czvf html_backup.tar.gz ./html` (바인드 마운트) 또는 임시 컨테이너 활용 마운트 백업 수행.
 
-## Step 17. Git/GitHub 원격 저장소 연동 증명
+## Step 17. Git/GitHub 원격 저장소 연동 및 Push 증명
+
 - **원격 저장소 확인 (`git remote -v`):**
 ```bash
 $ git remote -v
@@ -197,6 +198,9 @@ origin  [https://github.com/kiara2589/goldjung-lab-001.git](https://github.com/k
 origin  [https://github.com/kiara2589/goldjung-lab-001.git](https://github.com/kiara2589/goldjung-lab-001.git) (push)
 ```
 
+- **GitHub 최종 Push 실행 로그 (`git push`):**
+  - `git push -u origin main --force` 명령을 수행하여 원격 저장소(`https://github.com/kiara2589/goldjung-lab-001.git`)의 `main` 브랜치로 최신 코드 및 문서 업데이트 업로드 완료함.
+  
 ---
 
 ## 🛠️ 트러블슈팅 (Troubleshooting & 오류 해결 기록)
